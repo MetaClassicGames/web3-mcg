@@ -55,16 +55,16 @@ function App() {
 
         {/* Buy NFT buttons */}
         <button onClick={buyRookiePresale}>BUY ROOKIE NFT</button>
-        <p>Rookies restantes {rookieLasting}</p>
+        <p>Rookies restantes {rookieLasting} / 1000</p>
         <br />
         <button onClick={buyAmateurPresale}>BUY AMATEUR NFT</button>
-        <p>Amateur restantes {amateurLasting}</p>
+        <p>Amateur restantes {amateurLasting} / 1000</p>
         <br />
         <button onClick={buyProPresale}>BUY PRO NFT</button>
-        <p>Pros restantes {proLasting}</p>
+        <p>Pros restantes {proLasting} / 1000</p>
         <br />
         <button onClick={buyLegendPresale}>BUY LEYEND NFT</button>
-        <p>Legend restantes {legendLasting}</p>
+        <p>Legend restantes {legendLasting} / 1000</p>
 
         {/* Loading label */}
         <h1>{loadingMessage ? "Loading Transaction..." : ""}</h1>
