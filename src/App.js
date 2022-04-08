@@ -9,8 +9,20 @@ import { shortAddress } from "./hooks/shortAddress";
 
 function App() {
   // Context data
-  const { connectWallet, currentAccount, errorMessage, loadingMessage } =
-    useContext(TransactionContext);
+  const {
+    rookieLasting,
+    amateurLasting,
+    proLasting,
+    legendLasting,
+    buyLegendPresale,
+    buyProPresale,
+    buyAmateurPresale,
+    buyRookiePresale,
+    connectWallet,
+    currentAccount,
+    errorMessage,
+    loadingMessage,
+  } = useContext(TransactionContext);
 
   return (
     <div className="App">
@@ -34,13 +46,17 @@ function App() {
         <br />
 
         {/* Buy NFT buttons */}
-        <button>BUY ROOKIE NFT</button>
+        <button onClick={buyRookiePresale}>BUY ROOKIE NFT</button>
+        <p>Rookies restantes {rookieLasting}</p>
         <br />
-        <button>BUY AMATEUR NFT</button>
+        <button onClick={buyAmateurPresale}>BUY AMATEUR NFT</button>
+        <p>Amateur restantes {amateurLasting}</p>
         <br />
-        <button>BUY PRO NFT</button>
+        <button onClick={buyProPresale}>BUY PRO NFT</button>
+        <p>Pros restantes {proLasting}</p>
         <br />
-        <button>BUY LEYEND NFT</button>
+        <button onClick={buyLegendPresale}>BUY LEYEND NFT</button>
+        <p>Legend restantes {legendLasting}</p>
 
         {/* Loading label */}
         <h1>{loadingMessage ? "Loading Transaction..." : ""}</h1>
