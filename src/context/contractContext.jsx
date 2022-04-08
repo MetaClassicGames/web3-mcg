@@ -74,6 +74,12 @@ export const TransactionProvider = ({ children }) => {
   const [proLasting, setProLasting] = useState();
   const [legendLasting, setLegendLasting] = useState();
 
+  // Balance of NFTS
+  const [rookieBalance, setRookieBalance] = useState();
+  const [amateurBalance, setAmateurBalance] = useState();
+  const [proBalance, setProBalance] = useState();
+  const [legendBalance, setLegendBalance] = useState();
+
   // Loading message
   const [loadingMessage, setLoadingMessage] = useState("");
 
@@ -106,6 +112,9 @@ export const TransactionProvider = ({ children }) => {
         await usdcContract.allowance(currentAccount, rookieContract.address)
       ) < parseInt(ethers.utils.parseEther(rookiePrice.toString()))
     ) {
+      // Changes the loading to true
+      setLoadingMessage(true);
+
       const approveTx = await usdcContract.approve(
         rookieContract.address,
         ethers.utils.parseEther(rookiePrice.toString())
@@ -116,6 +125,9 @@ export const TransactionProvider = ({ children }) => {
       if (receipt.status === 0) {
         allowanceOk = false;
       }
+
+      // Changes the loading to false
+      setLoadingMessage(false);
     }
 
     if (allowanceOk) {
@@ -142,8 +154,12 @@ export const TransactionProvider = ({ children }) => {
 
       // Sets the variable of lasting rookies NFT
       setRookieLasting(
-        1000 - (countRookies.toNumber() + currentRookie.toNumber())
+        1000 - (parseInt(countRookies) + parseInt(currentRookie))
       );
+
+      // Upadtes the balance variable
+      const balanceOfRookies = await rookieContract.balanceOf(currentAccount);
+      setRookieBalance(parseInt(balanceOfRookies));
 
       // Changes the loading to false
       setLoadingMessage(false);
@@ -170,6 +186,9 @@ export const TransactionProvider = ({ children }) => {
         await usdcContract.allowance(currentAccount, amateurContract.address)
       ) < parseInt(ethers.utils.parseEther(amateurPrice.toString()))
     ) {
+      // Changes the loading to true
+      setLoadingMessage(true);
+
       const approveTx = await usdcContract.approve(
         amateurContract.address,
         ethers.utils.parseEther(amateurPrice.toString())
@@ -180,6 +199,9 @@ export const TransactionProvider = ({ children }) => {
       if (receipt.status === 0) {
         allowanceOk = false;
       }
+
+      // Changes the loading to false
+      setLoadingMessage(false);
     }
 
     if (allowanceOk) {
@@ -197,9 +219,15 @@ export const TransactionProvider = ({ children }) => {
 
       const countAmateurs = await amateurContract.getPrivatelySellCount();
       const currentAmateur = await amateurContract.getCurrentTokenId();
+
+      // Sets the variable of lasting rookies NFT
       setAmateurLasting(
         1000 - (parseInt(countAmateurs) + parseInt(currentAmateur))
       );
+
+      // Upadtes the balance variable
+      const balanceOfAmateurs = await amateurContract.balanceOf(currentAccount);
+      setAmateurBalance(parseInt(balanceOfAmateurs));
 
       // Shows a message of success
       console.log(`Success - ${transactionHash.hash}`);
@@ -229,6 +257,9 @@ export const TransactionProvider = ({ children }) => {
         await usdcContract.allowance(currentAccount, proContract.address)
       ) < parseInt(ethers.utils.parseEther(proPrice.toString()))
     ) {
+      // Changes the loading to true
+      setLoadingMessage(true);
+
       const approveTx = await usdcContract.approve(
         proContract.address,
         ethers.utils.parseEther(proPrice.toString())
@@ -239,6 +270,9 @@ export const TransactionProvider = ({ children }) => {
       if (receipt.status === 0) {
         allowanceOk = false;
       }
+
+      // Changes the loading to false
+      setLoadingMessage(false);
     }
 
     if (allowanceOk) {
@@ -256,7 +290,13 @@ export const TransactionProvider = ({ children }) => {
 
       const countPro = await proContract.getPrivatelySellCount();
       const currentPro = await proContract.getCurrentTokenId();
+
+      // Sets the variable of lasting rookies NFT
       setProLasting(1000 - (parseInt(countPro) + parseInt(currentPro)));
+
+      // Upadtes the balance variable
+      const balanceOfPros = await proContract.balanceOf(currentAccount);
+      setProBalance(parseInt(balanceOfPros));
 
       // Shows a message of success
       console.log(`Success - ${transactionHash.hash}`);
@@ -286,6 +326,9 @@ export const TransactionProvider = ({ children }) => {
         await usdcContract.allowance(currentAccount, legendContract.address)
       ) < parseInt(ethers.utils.parseEther(legendPrice.toString()))
     ) {
+      // Changes the loading to true
+      setLoadingMessage(true);
+
       const approveTx = await usdcContract.approve(
         legendContract.address,
         ethers.utils.parseEther(legendPrice.toString())
@@ -296,6 +339,9 @@ export const TransactionProvider = ({ children }) => {
       if (receipt.status === 0) {
         allowanceOk = false;
       }
+
+      // Changes the loading to false
+      setLoadingMessage(false);
     }
 
     if (allowanceOk) {
@@ -313,9 +359,15 @@ export const TransactionProvider = ({ children }) => {
 
       const countLegends = await legendContract.getPrivatelySellCount();
       const currentLegend = await legendContract.getCurrentTokenId();
+
+      // Sets the variable of lasting rookies NFT
       setLegendLasting(
         1000 - (parseInt(countLegends) + parseInt(currentLegend))
       );
+
+      // Upadtes the balance variable
+      const balanceOfLegends = await legendContract.balanceOf(currentAccount);
+      setLegendBalance(parseInt(balanceOfLegends));
 
       // Shows a message of success
       console.log(`Success - ${transactionHash.hash}`);
@@ -323,6 +375,42 @@ export const TransactionProvider = ({ children }) => {
       // Changes the loading to false
       setLoadingMessage(false);
     }
+  };
+
+  const initialChecks = async (address) => {
+    // Gets the count of the NFTs minted and the balance of NFTs minted for Rookies
+    const rookieContract = getRookieContract();
+    const countRookies = await rookieContract.getPrivatelySellCount();
+    const currentRookie = await rookieContract.getCurrentTokenId();
+    const balanceOfRookies = await rookieContract.balanceOf(address);
+    setRookieLasting(1000 - (parseInt(countRookies) + parseInt(currentRookie)));
+    setRookieBalance(balanceOfRookies.toNumber());
+
+    // Gets the count of the NFTs minted and the balance of NFTs minted for Amateurs
+    const amateurContract = getAmateurContract();
+    const countAmateurs = await amateurContract.getPrivatelySellCount();
+    const currentAmateur = await amateurContract.getCurrentTokenId();
+    const balanceOfAmateurs = await amateurContract.balanceOf(address);
+    setAmateurLasting(
+      1000 - (parseInt(countAmateurs) + parseInt(currentAmateur))
+    );
+    setAmateurBalance(balanceOfAmateurs.toNumber());
+
+    // Gets the count of the NFTs minted and the balance of NFTs minted for Pros
+    const proContract = getProContract();
+    const countPro = await proContract.getPrivatelySellCount();
+    const currentPro = await proContract.getCurrentTokenId();
+    const balanceOfPros = await proContract.balanceOf(address);
+    setProLasting(1000 - (parseInt(countPro) + parseInt(currentPro)));
+    setProBalance(balanceOfPros.toNumber());
+
+    // Gets the count of the NFTs minted and the balance of NFTs minted for Legends
+    const legendContract = getLegendContract();
+    const countLegends = await legendContract.getPrivatelySellCount();
+    const currentLegend = await legendContract.getCurrentTokenId();
+    const balanceOfLegend = await legendContract.balanceOf(address);
+    setLegendLasting(1000 - (parseInt(countLegends) + parseInt(currentLegend)));
+    setLegendBalance(balanceOfLegend.toNumber());
   };
 
   // Function that checks our accounts
@@ -335,36 +423,7 @@ export const TransactionProvider = ({ children }) => {
       if (accounts.length && parseInt(window.ethereum.chainId) === ChainId) {
         setCurrentAccount(accounts[0]);
         setErrorMessage("");
-
-        // Gets the count of the NFTs minted
-        const rookieContract = getRookieContract();
-        const countRookies = await rookieContract.getPrivatelySellCount();
-        const currentRookie = await rookieContract.getCurrentTokenId();
-        const baseUri = await rookieContract.baseURI();
-
-        setRookieLasting(
-          1000 - (parseInt(countRookies) + parseInt(currentRookie))
-        );
-
-        const amateurContract = getAmateurContract();
-        const countAmateurs = await amateurContract.getPrivatelySellCount();
-        const currentAmateur = await amateurContract.getCurrentTokenId();
-        setAmateurLasting(
-          1000 - (parseInt(countAmateurs) + parseInt(currentAmateur))
-        );
-
-        const proContract = getProContract();
-        const countPro = await proContract.getPrivatelySellCount();
-        const currentPro = await proContract.getCurrentTokenId();
-        setProLasting(1000 - (parseInt(countPro) + parseInt(currentPro)));
-
-        const legendContract = getLegendContract();
-        const countLegends = await legendContract.getPrivatelySellCount();
-        const currentLegend = await legendContract.getCurrentTokenId();
-        setLegendLasting(
-          1000 - (parseInt(countLegends) + parseInt(currentLegend))
-        );
-
+        initialChecks(accounts[0]);
         // If the chain id isn't valid
       } else if (parseInt(window.ethereum.chainId) !== ChainId) {
         setCurrentAccount("");
@@ -416,6 +475,10 @@ export const TransactionProvider = ({ children }) => {
   return (
     <TransactionContext.Provider
       value={{
+        rookieBalance,
+        amateurBalance,
+        proBalance,
+        legendBalance,
         rookieLasting,
         amateurLasting,
         proLasting,
