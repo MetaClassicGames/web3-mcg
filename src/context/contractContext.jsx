@@ -68,6 +68,12 @@ const getLegendContract = () => {
 
 // Context itself
 export const TransactionProvider = ({ children }) => {
+  // Private sell count NFTS
+  const [rookiePrivateSellCount, setRookieprivateSellCount] = useState();
+  const [amateurPrivateSellCount, setAmateurprivateSellCount] = useState();
+  const [proPrivateSellCount, setProprivateSellCount] = useState();
+  const [legendPrivateSellCount, setLegendprivateSellCount] = useState();
+
   // Lasting NFTS
   const [rookieLasting, setRookieLasting] = useState();
   const [amateurLasting, setAmateurLasting] = useState();
@@ -378,39 +384,47 @@ export const TransactionProvider = ({ children }) => {
   };
 
   const initialChecks = async (address) => {
-    // Gets the count of the NFTs minted and the balance of NFTs minted for Rookies
+    // Gets the count of the NFTs minted, the balance of NFTs minted and the private sell for Rookies
     const rookieContract = getRookieContract();
     const countRookies = await rookieContract.getPrivatelySellCount();
     const currentRookie = await rookieContract.getCurrentTokenId();
     const balanceOfRookies = await rookieContract.balanceOf(address);
+    const privateSellOfRookies = await rookieContract.getPrivateSell(address);
     setRookieLasting(1000 - (parseInt(countRookies) + parseInt(currentRookie)));
     setRookieBalance(balanceOfRookies.toNumber());
+    setRookieprivateSellCount(privateSellOfRookies.toNumber());
 
-    // Gets the count of the NFTs minted and the balance of NFTs minted for Amateurs
+    // Gets the count of the NFTs minted, the balance of NFTs minted and the private sell for Amateurs
     const amateurContract = getAmateurContract();
     const countAmateurs = await amateurContract.getPrivatelySellCount();
     const currentAmateur = await amateurContract.getCurrentTokenId();
     const balanceOfAmateurs = await amateurContract.balanceOf(address);
+    const privateSellOfAmateurs = await amateurContract.getPrivateSell(address);
     setAmateurLasting(
       1000 - (parseInt(countAmateurs) + parseInt(currentAmateur))
     );
     setAmateurBalance(balanceOfAmateurs.toNumber());
+    setAmateurprivateSellCount(privateSellOfAmateurs.toNumber());
 
-    // Gets the count of the NFTs minted and the balance of NFTs minted for Pros
+    // Gets the count of the NFTs minted, the balance of NFTs minted and the private sell for Pros
     const proContract = getProContract();
     const countPro = await proContract.getPrivatelySellCount();
     const currentPro = await proContract.getCurrentTokenId();
     const balanceOfPros = await proContract.balanceOf(address);
+    const privateSellOfPros = await proContract.getPrivateSell(address);
     setProLasting(1000 - (parseInt(countPro) + parseInt(currentPro)));
     setProBalance(balanceOfPros.toNumber());
+    setProprivateSellCount(privateSellOfPros.toNumber());
 
-    // Gets the count of the NFTs minted and the balance of NFTs minted for Legends
+    // Gets the count of the NFTs minted, the balance of NFTs minted and the private sell for Legends
     const legendContract = getLegendContract();
     const countLegends = await legendContract.getPrivatelySellCount();
     const currentLegend = await legendContract.getCurrentTokenId();
     const balanceOfLegend = await legendContract.balanceOf(address);
+    const privateSellOfLegend = await legendContract.getPrivateSell(address);
     setLegendLasting(1000 - (parseInt(countLegends) + parseInt(currentLegend)));
     setLegendBalance(balanceOfLegend.toNumber());
+    setLegendprivateSellCount(privateSellOfLegend.toNumber());
   };
 
   // Function that checks our accounts
@@ -475,6 +489,10 @@ export const TransactionProvider = ({ children }) => {
   return (
     <TransactionContext.Provider
       value={{
+        rookiePrivateSellCount,
+        amateurPrivateSellCount,
+        proPrivateSellCount,
+        legendPrivateSellCount,
         rookieBalance,
         amateurBalance,
         proBalance,

@@ -10,6 +10,10 @@ import { shortAddress } from "./hooks/shortAddress";
 function App() {
   // Context data
   const {
+    rookiePrivateSellCount,
+    amateurPrivateSellCount,
+    proPrivateSellCount,
+    legendPrivateSellCount,
     rookieBalance,
     amateurBalance,
     proBalance,
@@ -79,6 +83,9 @@ function App() {
               style={{ padding: "10px" }}
             ></img>
             <p>Tus Rookies: {rookieBalance}</p>
+            {rookiePrivateSellCount > 0 ? (
+              <button>Reclamar {rookiePrivateSellCount} Rookies</button>
+            ) : null}
           </div>
 
           {/* Amateur */}
@@ -91,6 +98,9 @@ function App() {
               style={{ padding: "10px" }}
             ></img>
             <p>Tus Amateur: {amateurBalance}</p>
+            {amateurPrivateSellCount > 0 ? (
+              <button>Reclamar {amateurPrivateSellCount} Amateurs</button>
+            ) : null}
           </div>
 
           {/* Pro */}
@@ -103,6 +113,9 @@ function App() {
               style={{ padding: "10px" }}
             ></img>
             <p>Tus Pro: {proBalance}</p>
+            {proPrivateSellCount > 0 ? (
+              <button>Reclamar {proPrivateSellCount} Pros</button>
+            ) : null}
           </div>
 
           {/* Legend */}
@@ -115,8 +128,13 @@ function App() {
               style={{ padding: "10px" }}
             ></img>
             <p>Tus Legend: {legendBalance}</p>
+            {legendPrivateSellCount > 0 ? (
+              <button>Reclamar {legendPrivateSellCount} Legend</button>
+            ) : null}
           </div>
         </div>
+
+        <br />
       </header>
     </div>
   );
