@@ -76,7 +76,7 @@ function App() {
           {/* Rookie */}
           <div style={{ display: "inline", float: "left" }}>
             <img
-              src="http://vegabuild.es/mcg_images/rookie.png"
+              src="http://vegabuild.es/mcg_images/rookie.gif"
               alt="Rookie"
               width="300"
               height="400"
@@ -91,7 +91,7 @@ function App() {
           {/* Amateur */}
           <div style={{ display: "inline", float: "left" }}>
             <img
-              src="http://vegabuild.es/mcg_images/amateur.png"
+              src="http://vegabuild.es/mcg_images/amateur.gif"
               alt="Amateur"
               width="300"
               height="400"
@@ -106,7 +106,7 @@ function App() {
           {/* Pro */}
           <div style={{ display: "inline", float: "left" }}>
             <img
-              src="http://vegabuild.es/mcg_images/pro.png"
+              src="http://vegabuild.es/mcg_images/pro.gif"
               alt="Pro"
               width="300"
               height="400"
@@ -121,7 +121,7 @@ function App() {
           {/* Legend */}
           <div style={{ display: "inline", float: "left" }}>
             <img
-              src="http://vegabuild.es/mcg_images/legend.png"
+              src="http://vegabuild.es/mcg_images/legend.gif"
               alt="Legend"
               width="300"
               height="400"
